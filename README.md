@@ -1,12 +1,48 @@
-# React + Vite
+# Simple Meal Search App (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a simple React application built with Vite and styled with Tailwind CSS. It allows users to view a list of meals and filter them using a search bar.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+*   Displays a list of meals with images, titles, and descriptions.
+*   Search functionality to filter meals by title (case-insensitive).
+*   Responsive card layout for meals.
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+*   Node.js (v18.x or later recommended)
+*   npm (comes with Node.js)
+
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/your-repo-name.git
+    ```
+2.  Navigate to the project directory:
+    ```bash
+    cd project1 
+    ```
+3.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+### Running the Development Server
+
+To run the app in development mode:
+
+```bash
+npm run dev
+```
+
+This will start the Vite development server, typically at `http://localhost:5173`. Open this URL in your browser to see the application.
+
+## Available Scripts
+
+*   `npm run dev`: Starts the development server.
+*   `npm run build`: Builds the app for production.
+*   `npm run lint`: Lints the codebase using ESLint.
+*   `npm run preview`: Serves the production build locally for preview.
