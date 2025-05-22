@@ -1,4 +1,7 @@
-export function Card({ image, title, description }) {   
+import PropTypes from 'prop-types';
+
+export function Card({ meal }) {
+    const { image, title, description } = meal;
     return (
         <div className="max-w-sm rounded overflow-hidden shadow-lg bg-gray-800 text-white">
         <img
@@ -15,3 +18,12 @@ export function Card({ image, title, description }) {
       </div>
     )
 }
+
+Card.propTypes = {
+  meal: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired
+  }).isRequired
+};
