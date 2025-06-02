@@ -1,5 +1,4 @@
 import React from 'react'
-import SearchForm from '../components/SearchForm'
 
 export default function MainLayout({ children }) {
   return (
@@ -29,10 +28,7 @@ export default function MainLayout({ children }) {
               </a>
             </li>
           </ul>
-          {/* Search Form */}
-          <div className="ml-6">
-            <SearchForm />
-          </div>
+          {/* Search Form removed */}
         </div>
       </nav>
 
