@@ -3,9 +3,11 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { Card } from '../components/Card';
 import MainLayout from '../layouts/MainLayout';
-import SearchForm from '../components/SearchForm.jsx';
+// SearchForm import will be removed if it's no longer used directly by App's main content route
+// import SearchForm from '../components/SearchForm.jsx';
+import Sidebar from './components/Sidebar.jsx'; // Import Sidebar
 import Pagination from '../components/Pagination.jsx';
-import MealDetailPage from './components/MealDetailPage.jsx'; // Corrected path
+import MealDetailPage from './components/MealDetailPage.jsx';
 
 function App() {
   const [meals, setMeals] = useState([
@@ -529,33 +531,113 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Keep this if you want to control items per page via state
+
+  // New states for additional filters
+  const [selectedCuisines, setSelectedCuisines] = useState([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState([]); // Assuming multi-select for difficulty
+  const [calorieRange, setCalorieRange] = useState({ min: '', max: '' });
+  const [selectedPrepTime, setSelectedPrepTime] = useState('');
 
   const handleSearch = (query) => {
     setSearchTerm(query);
-    setCurrentPage(1); // Reset to first page on new search
+    setCurrentPage(1);
   };
 
   const handleIngredientFilterChange = (newSelectedIngredients) => {
     setSelectedIngredients(newSelectedIngredients);
-    setCurrentPage(1); // Reset to first page on filter change
+    setCurrentPage(1);
+  };
+
+  // Handlers for new filters
+  const handleCuisineChange = (cuisine) => {
+    setSelectedCuisines(prevCuisines =>
+      prevCuisines.includes(cuisine)
+        ? prevCuisines.filter(c => c !== cuisine)
+        : [...prevCuisines, cuisine]
+    );
+    setCurrentPage(1);
+  };
+
+  const handleDifficultyChange = (difficulty) => {
+    setSelectedDifficulties(prevDifficulties =>
+      prevDifficulties.includes(difficulty)
+        ? prevDifficulties.filter(d => d !== difficulty)
+        : [...prevDifficulties, difficulty]
+    );
+    setCurrentPage(1);
+  };
+
+  const handleCalorieChange = (type, value) => {
+    setCalorieRange(prevRange => ({
+      ...prevRange,
+      [type]: value === '' ? '' : parseInt(value, 10) // Store as number or empty string
+    }));
+    setCurrentPage(1);
+  };
+
+  const handlePrepTimeChange = (value) => {
+    setSelectedPrepTime(value);
+    setCurrentPage(1);
+  };
+
+  // Helper function to parse prep time string (e.g., "30 minutes") to a number
+  const parsePrepTime = (prepTimeString) => {
+    if (!prepTimeString || typeof prepTimeString !== 'string') return Infinity; // Or handle as error
+    const numericPart = prepTimeString.match(/^(\d+)/);
+    return numericPart ? parseInt(numericPart[0], 10) : Infinity;
   };
 
   const filteredMeals = meals.filter(meal => {
     const searchTermLower = searchTerm.toLowerCase();
-    const matchesSearchTerm = meal.title.toLowerCase().includes(searchTermLower) ||
-                              meal.description.toLowerCase().includes(searchTermLower);
-
-    if (selectedIngredients.length === 0) {
-      return matchesSearchTerm;
+    // Text Search
+    if (searchTermLower && !(meal.title.toLowerCase().includes(searchTermLower) || meal.description.toLowerCase().includes(searchTermLower))) {
+      return false;
     }
 
-    const matchesIngredients = selectedIngredients.every(ingredient =>
-      meal.ingredients.some(mealIngredient =>
-        mealIngredient.toLowerCase().includes(ingredient.toLowerCase())
-      )
-    );
-    return matchesSearchTerm && matchesIngredients;
+    // Ingredient Filter
+    if (selectedIngredients.length > 0) {
+      const matchesIngredients = selectedIngredients.every(ingredient =>
+        meal.ingredients.some(mealIngredient =>
+          mealIngredient.toLowerCase().includes(ingredient.toLowerCase())
+        )
+      );
+      if (!matchesIngredients) return false;
+    }
+
+    // Cuisine Filter
+    if (selectedCuisines.length > 0 && !selectedCuisines.includes(meal.cuisine)) {
+      return false;
+    }
+
+    // Difficulty Filter
+    if (selectedDifficulties.length > 0 && !selectedDifficulties.includes(meal.difficulty)) {
+      return false;
+    }
+
+    // Calorie Filter
+    const minCals = calorieRange.min !== '' ? parseFloat(calorieRange.min) : null;
+    const maxCals = calorieRange.max !== '' ? parseFloat(calorieRange.max) : null;
+
+    if (minCals !== null && meal.calories < minCals) {
+      return false;
+    }
+    if (maxCals !== null && meal.calories > maxCals) {
+      return false;
+    }
+
+    // Prep Time Filter
+    if (selectedPrepTime) { // Assuming selectedPrepTime is a string like '15', '30' or empty
+      const maxPrepTimeSelected = parseInt(selectedPrepTime, 10);
+      if (!isNaN(maxPrepTimeSelected)) {
+        const mealPrepTime = parsePrepTime(meal.prepTime);
+        if (mealPrepTime > maxPrepTimeSelected) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   });
 
   // Pagination logic
@@ -580,6 +662,20 @@ function App() {
   const allIngredients = meals.flatMap(meal => meal.ingredients);
   const uniqueIngredients = [...new Set(allIngredients)].sort();
 
+  const allCuisines = meals.map(meal => meal.cuisine);
+  const uniqueCuisines = [...new Set(allCuisines)].sort();
+
+  const uniqueDifficulties = ['Easy', 'Medium', 'Hard']; // Fixed list or derive if data varies more
+
+  const prepTimeOptions = [
+    { value: '', label: 'Any Max Prep Time' },
+    { value: '15', label: '< 15 min' },
+    { value: '30', label: '< 30 min' },
+    { value: '45', label: '< 45 min' },
+    { value: '60', label: '< 1 hour' },
+    { value: '90', label: '< 1.5 hours' },
+  ];
+
 
   return (
     <MainLayout>
@@ -587,35 +683,64 @@ function App() {
         <Route
           path="/"
           element={
-            <> {/* Using a fragment to group elements for the route */}
-              <SearchForm
+            // Parent container for Sidebar and main content area
+            <div className="flex flex-col md:flex-row min-h-screen">
+              <Sidebar
                 query={searchTerm}
                 onSearchSubmit={handleSearch}
                 uniqueIngredients={uniqueIngredients}
                 selectedIngredients={selectedIngredients}
                 onIngredientChange={handleIngredientFilterChange}
+
+                uniqueCuisines={uniqueCuisines}
+                selectedCuisines={selectedCuisines}
+                onCuisineChange={handleCuisineChange}
+
+                uniqueDifficulties={uniqueDifficulties}
+                selectedDifficulty={selectedDifficulties} // Pass the array
+                onDifficultyChange={handleDifficultyChange} // Pass the handler
+
+                calorieRange={calorieRange}
+                onCalorieChange={handleCalorieChange}
+
+                prepTimeOptions={prepTimeOptions}
+                selectedPrepTime={selectedPrepTime}
+                onPrepTimeChange={handlePrepTimeChange}
               />
-              <div className="flex flex-col justify-center items-center min-h-screen">
+              {/*
+                The layout of Sidebar and the meal list needs consideration.
+                Typically, Sidebar would be part of MainLayout or a new page-specific layout component.
+                For now, placing it directly here as a replacement for SearchForm.
+                The main content (meal list + pagination) might need to be wrapped or styled
+                to appear next to the Sidebar rather than below it. This will be handled in the next step.
+              */}
+              <main className="flex-grow p-4 md:p-6"> {/* Main content area takes remaining space */}
                 {currentMeals.length > 0 ? (
-                  currentMeals.map(meal => (
-                    <Card
-                      key={meal.id}
-                      meal={meal}
-                    />
-                  ))
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"> {/* Responsive grid for cards */}
+                    {currentMeals.map(meal => (
+                      <Card
+                        key={meal.id}
+                        meal={meal}
+                      />
+                    ))}
+                  </div>
                 ) : (
-                  <p>No meals found.</p>
+                  <div className="text-center py-10">
+                    <p className="text-2xl text-gray-500">No meals found matching your criteria.</p>
+                  </div>
                 )}
-                {filteredMeals.length > itemsPerPage && (
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onNextPage={handleNextPage}
-                    onPrevPage={handlePrevPage}
-                  />
+                {filteredMeals.length > 0 && filteredMeals.length > itemsPerPage && (
+                  <div className="mt-8 flex justify-center"> {/* Centered pagination */}
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onNextPage={handleNextPage}
+                      onPrevPage={handlePrevPage}
+                    />
+                  </div>
                 )}
-              </div>
-            </>
+              </main>
+            </div>
           }
         />
         <Route path="/meal/:id" element={<MealDetailPage meals={meals} />} />

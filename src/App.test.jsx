@@ -34,7 +34,7 @@ describe('App Component Functionality', () => {
     // Since Card is not mocked, we look for actual card content.
     // The test below for navigation will be more specific about card interaction.
     // For now, let's check for the presence of the first meal's title as a proxy for cards.
-    expect(screen.getByText('Spaghetti Carbonara')).toBeInTheDocument(); 
+    expect(screen.getByText('Spaghetti Carbonara')).toBeInTheDocument();
     // Check for multiple meal titles to estimate items per page
     expect(screen.getByText('Chicken Curry')).toBeInTheDocument();
     expect(screen.getByText('Vegan Burger')).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('App Component Functionality', () => {
     expect(screen.getByText('Beef Tacos')).toBeInTheDocument();
 
     // Assuming 25 meals, 5 pages. Page 1 of 5.
-    expect(screen.getByText(/Page 1 of 5/i)).toBeInTheDocument(); 
+    expect(screen.getByText(/Page 1 of 5/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Previous/i })).toBeDisabled();
   });
 
@@ -52,7 +52,7 @@ describe('App Component Functionality', () => {
     fireEvent.click(nextButton);
 
     // After clicking next, "Margherita Pizza" should be the first item on page 2
-    expect(screen.getByText('Margherita Pizza')).toBeInTheDocument(); 
+    expect(screen.getByText('Margherita Pizza')).toBeInTheDocument();
     expect(screen.getByText(/Page 2 of 5/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Previous/i })).not.toBeDisabled();
   });
@@ -61,7 +61,7 @@ describe('App Component Functionality', () => {
     renderWithRouter(<App />);
     const nextButton = screen.getByRole('button', { name: /Next/i });
     fireEvent.click(nextButton); // Go to page 2
-    
+
     const prevButton = screen.getByRole('button', { name: /Previous/i });
     fireEvent.click(prevButton); // Go back to page 1
 
@@ -87,7 +87,7 @@ describe('App Component Functionality', () => {
     renderWithRouter(<App />);
     const user = userEvent.setup();
     const nextButton = screen.getByRole('button', { name: /Next/i });
-    
+
     // Go to page 2
     fireEvent.click(nextButton);
     expect(screen.getByText(/Page 2 of 5/i)).toBeInTheDocument();
@@ -118,13 +118,13 @@ describe('App Component Functionality', () => {
     const searchForm = mainElement.querySelector('form');
     const searchInput = searchForm.querySelector('input[placeholder="Search by name or description..."]');
     const searchButton = searchForm.querySelector('button[type="submit"]');
-    
+
     expect(searchInput).toBeInTheDocument();
     expect(searchButton).toBeInTheDocument();
 
     await user.type(searchInput, 'NonExistentMeal');
     await user.click(searchButton);
-    
+
     expect(screen.getByText(/No meals found./i)).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Previous/i })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Next/i })).not.toBeInTheDocument();
@@ -165,7 +165,7 @@ describe('App Component Functionality', () => {
     const user = userEvent.setup();
     const pastaCheckbox = await screen.findByLabelText(/^pasta$/i); // Exact match
     const eggsCheckbox = await screen.findByLabelText(/^eggs$/i); // Exact match
-    
+
     await user.click(pastaCheckbox);
     await user.click(eggsCheckbox);
 
@@ -189,7 +189,7 @@ describe('App Component Functionality', () => {
     expect(screen.getByText('Spaghetti Carbonara')).toBeInTheDocument(); // Still Carbonara (only pasta dish)
     expect(screen.queryByText('Pancakes')).not.toBeInTheDocument();
   });
-  
+
   test('combines text search with ingredient filter', async () => {
     renderWithRouter(<App />);
     const user = userEvent.setup();
@@ -207,7 +207,7 @@ describe('App Component Functionality', () => {
     const searchFormInMain = mainElement.querySelector('form');
     const searchInput = searchFormInMain.querySelector('input[placeholder="Search by name or description..."]');
     const searchButton = searchFormInMain.querySelector('button[type="submit"]');
-    
+
     await user.type(searchInput, 'curry');
     await user.click(searchButton);
 
@@ -244,7 +244,7 @@ describe('App Component Functionality', () => {
       // Since Card is no longer mocked, we click on the text within the card that's part of the Link
       const carbonaraCardTitle = screen.getByText('Spaghetti Carbonara');
       await user.click(carbonaraCardTitle);
-      
+
       // Wait for MealDetailPage to render and show the title as a heading
       // The title on the detail page is expected to be an h1
       const detailPageTitle = await screen.findByRole('heading', { name: /Spaghetti Carbonara/i, level: 1 });
@@ -255,7 +255,7 @@ describe('App Component Functionality', () => {
 
     test('direct navigation to meal detail page shows correct meal', async () => {
       renderWithRouter(<App />, { initialEntries: ['/meal/2'] }); // Chicken Curry
-      
+
       const detailPageTitle = await screen.findByRole('heading', { name: /Chicken Curry/i, level: 1 });
       expect(detailPageTitle).toBeInTheDocument();
       // Check for a unique instruction step
@@ -264,7 +264,7 @@ describe('App Component Functionality', () => {
 
     test('displays "Meal Not Found" for invalid meal ID', async () => {
       renderWithRouter(<App />, { initialEntries: ['/meal/999'] });
-      
+
       expect(await screen.findByText(/Meal Not Found/i)).toBeInTheDocument();
     });
 

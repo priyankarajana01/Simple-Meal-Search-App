@@ -12,8 +12,8 @@ const MealDetailPage = ({ meals }) => {
         <div className="bg-white p-8 rounded-lg shadow-xl">
           <h2 className="text-3xl font-semibold text-red-600 mb-4">Meal Not Found</h2>
           <p className="text-gray-700 mt-2 mb-6">Sorry, we couldn't find the meal you're looking for.</p>
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="mt-4 inline-block bg-indigo-600 text-white px-8 py-3 rounded-md hover:bg-indigo-700 transition duration-150 text-lg font-medium"
           >
             Back to All Meals
@@ -80,11 +80,11 @@ const MealDetailPage = ({ meals }) => {
                 ))}
               </ol>
             </div>
-            
+
             {/* Back Button */}
             <div className="mt-auto pt-6 text-center border-t border-gray-200">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="inline-block bg-indigo-600 text-white px-10 py-3 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 text-lg font-medium transition duration-150"
               >
                 Back to All Meals
