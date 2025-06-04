@@ -1,5 +1,7 @@
 import React from 'react'
 
+
+
 export default function MainLayout({ children }) {
   return (
     <div className="bg-gray-900 text-white min-h-screen">
