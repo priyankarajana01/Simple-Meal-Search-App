@@ -19,7 +19,8 @@ const Sidebar = ({
   onCalorieChange = () => {},
   prepTimeOptions = [],
   selectedPrepTime = '', // Controlled by App.jsx
-  onPrepTimeChange = () => {}
+  onPrepTimeChange = () => {},
+  onClearAllFilters = () => {}
 }) => {
   const [localQuery, setLocalQuery] = useState(query);
 
@@ -78,12 +79,12 @@ const Sidebar = ({
 
   return (
     <aside
-      className="w-full md:w-72 bg-gray-100 p-5 border-r border-gray-200 shadow-md space-y-6" // Adjusted width and spacing
+      className="w-full md:w-72 bg-gray-100 p-5 border-r border-gray-200 shadow-md" // Adjusted width and spacing, removed space-y-6
       aria-label="Sidebar with filters"
     >
       {/* Text Search Section */}
-      <div>
-        <h2 className="text-xl font-semibold text-gray-800 mb-3">Search Meals</h2>
+      <fieldset className="mb-6">
+        <legend className="text-xl font-semibold text-gray-800 mb-3">Search Meals</legend>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-3">
           <input
             type="text"
@@ -99,11 +100,11 @@ const Sidebar = ({
             Search
           </button>
         </form>
-      </div>
+      </fieldset>
 
       {/* Ingredient Filter Section */}
-      <div>
-        <h3 className="text-xl font-semibold text-gray-800 mb-3 pt-4 border-t border-gray-300">Filter by Ingredients</h3>
+      <fieldset className="mb-6">
+        <legend className="text-xl font-semibold text-gray-800 mb-3 pt-4 border-t border-gray-300">Filter by Ingredients</legend>
         <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
           {uniqueIngredients.length > 0 ? uniqueIngredients.map(ingredient => (
             <label key={ingredient} className="flex items-center space-x-3 p-2 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-200 transition duration-150 shadow-sm">
@@ -119,11 +120,11 @@ const Sidebar = ({
             <p className="text-sm text-gray-500">No ingredients available for filtering.</p>
           )}
         </div>
-      </div>
+      </fieldset>
 
       {/* Cuisine Filter Section */}
-      <div>
-        <h3 className="text-xl font-semibold text-gray-800 mb-3 pt-4 border-t border-gray-300">Filter by Cuisine</h3>
+      <fieldset className="mb-6">
+        <legend className="text-xl font-semibold text-gray-800 mb-3 pt-4 border-t border-gray-300">Filter by Cuisine</legend>
         <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
           {uniqueCuisines.length > 0 ? uniqueCuisines.map(cuisine => (
             <label key={cuisine} className="flex items-center space-x-3 p-2 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-200 transition duration-150 shadow-sm">
@@ -139,11 +140,11 @@ const Sidebar = ({
              <p className="text-sm text-gray-500">No cuisines available for filtering.</p>
           )}
         </div>
-      </div>
+      </fieldset>
 
       {/* Difficulty Filter Section */}
-      <div>
-        <h3 className="text-xl font-semibold text-gray-800 mb-3 pt-4 border-t border-gray-300">Filter by Difficulty</h3>
+      <fieldset className="mb-6">
+        <legend className="text-xl font-semibold text-gray-800 mb-3 pt-4 border-t border-gray-300">Filter by Difficulty</legend>
         <div className="space-y-2">
           {uniqueDifficulties.length > 0 ? uniqueDifficulties.map(difficulty => (
             <label key={difficulty.value || difficulty} className="flex items-center space-x-3 p-2 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-200 transition duration-150 shadow-sm">
@@ -161,35 +162,35 @@ const Sidebar = ({
             <p className="text-sm text-gray-500">No difficulties available for filtering.</p>
           )}
         </div>
-      </div>
+      </fieldset>
 
       {/* Calories Filter Section */}
-      <div>
-        <h3 className="text-xl font-semibold text-gray-800 mb-3 pt-4 border-t border-gray-300">Filter by Calories</h3>
-        <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:space-x-2 sm:items-center">
+      <fieldset className="mb-6">
+        <legend className="text-xl font-semibold text-gray-800 mb-3 pt-4 border-t border-gray-300">Filter by Calories</legend>
+        <div className="flex flex-col space-y-2"> {/* Changed flex classes for vertical stacking and full width */}
           <input
             type="number"
             placeholder="Min"
             value={calorieRange.min} // Use prop
             onChange={handleMinCalInputChange}
-            className="w-full sm:w-1/2 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-500 shadow-sm text-sm"
+            className="w-full sm:w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-500 shadow-sm text-sm" // Changed sm:w-1/2 to sm:w-full
             min="0"
           />
-          <span className="hidden sm:inline text-gray-500">-</span>
+          {/* Removed the span for the dash, as they are stacked now */}
           <input
             type="number"
             placeholder="Max"
             value={calorieRange.max} // Use prop
             onChange={handleMaxCalInputChange}
-            className="w-full sm:w-1/2 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-500 shadow-sm text-sm"
+            className="w-full sm:w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-500 shadow-sm text-sm" // Changed sm:w-1/2 to sm:w-full
             min="0"
           />
         </div>
-      </div>
+      </fieldset>
 
       {/* Prep Time Filter Section */}
-      <div>
-        <h3 className="text-xl font-semibold text-gray-800 mb-3 pt-4 border-t border-gray-300">Filter by Max Prep Time</h3>
+      <fieldset className="mb-6">
+        <legend className="text-xl font-semibold text-gray-800 mb-3 pt-4 border-t border-gray-300">Filter by Max Prep Time</legend>
         <select
           value={selectedPrepTime} // Use prop
           onChange={handlePrepTimeSelectChange}
@@ -200,8 +201,18 @@ const Sidebar = ({
             <option key={option.value} value={option.value}>{option.label}</option>
           ))}
         </select>
-      </div>
+      </fieldset>
 
+      {/* Clear All Filters Button */}
+      <div className="mt-6">
+        <button
+          type="button" // Important for forms if not submitting
+          onClick={onClearAllFilters}
+          className="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 shadow-sm transition duration-150 w-full"
+        >
+          Clear All Filters
+        </button>
+      </div>
     </aside>
   );
 };
@@ -237,6 +248,7 @@ Sidebar.propTypes = {
   ).isRequired,
   selectedPrepTime: PropTypes.string.isRequired,
   onPrepTimeChange: PropTypes.func.isRequired,
+  onClearAllFilters: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
