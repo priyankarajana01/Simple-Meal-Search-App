@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+
+
 export function Card({ meal }) {
     const { id, image, title, description } = meal; // Destructure id
     return (
