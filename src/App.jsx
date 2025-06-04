@@ -581,6 +581,16 @@ function App() {
     setCurrentPage(1);
   };
 
+  const handleClearAllFilters = () => {
+    setSearchTerm("");
+    setSelectedIngredients([]);
+    setSelectedCuisines([]);
+    setSelectedDifficulties([]);
+    setCalorieRange({ min: '', max: '' });
+    setSelectedPrepTime('');
+    setCurrentPage(1);
+  };
+
   // Helper function to parse prep time string (e.g., "30 minutes") to a number
   const parsePrepTime = (prepTimeString) => {
     if (!prepTimeString || typeof prepTimeString !== 'string') return Infinity; // Or handle as error
@@ -706,6 +716,7 @@ function App() {
                 prepTimeOptions={prepTimeOptions}
                 selectedPrepTime={selectedPrepTime}
                 onPrepTimeChange={handlePrepTimeChange}
+                onClearAllFilters={handleClearAllFilters} // Pass the new handler
               />
               {/*
                 The layout of Sidebar and the meal list needs consideration.
