@@ -1,6 +1,5 @@
-import React from 'react'
-
-
+import React from 'react';
+import { Link } from 'react-router-dom'; // Add this import
 
 export default function MainLayout({ children }) {
   return (
@@ -9,25 +8,30 @@ export default function MainLayout({ children }) {
       <nav className="bg-gray-800 p-4 shadow-lg">
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo */}
-          <div className="text-2xl font-bold">
+          <Link to="/" className="text-2xl font-bold"> {/* Changed to Link */}
             MealFinder
-          </div>
+          </Link>
           {/* Navigation Links */}
           <ul className="flex space-x-6">
             <li>
-              <a href="#" className="hover:text-gray-300">
+              <Link to="/" className="hover:text-gray-300"> {/* Changed to Link */}
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-gray-300">
+              <a href="#" className="hover:text-gray-300"> {/* Keep as is for now */}
                 About
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-gray-300">
+              <a href="#" className="hover:text-gray-300"> {/* Keep as is for now */}
                 Contact
               </a>
+            </li>
+            <li> {/* Add new Register link */}
+              <Link to="/register" className="hover:text-gray-300">
+                Register
+              </Link>
             </li>
           </ul>
           {/* Search Form removed */}
