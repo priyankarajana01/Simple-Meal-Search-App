@@ -33,6 +33,11 @@ export default function MainLayout({ children }) {
                 Register
               </Link>
             </li>
+            <li> {/* Add new Login link */}
+              <Link to="/login" className="hover:text-gray-300">
+                Login
+              </Link>
+            </li>
           </ul>
           {/* Search Form removed */}
         </div>
