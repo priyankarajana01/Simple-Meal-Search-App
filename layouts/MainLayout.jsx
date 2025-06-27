@@ -28,13 +28,13 @@ export default function MainLayout({ children }) {
                 Contact
               </a>
             </li>
-            <li> {/* Add new Register link */}
-              <Link to="/register" className="hover:text-gray-300">
+            <li>
+              <Link to="/register" className="text-yellow-500 hover:text-yellow-400"> {/* Updated */}
                 Register
               </Link>
             </li>
-            <li> {/* Add new Login link */}
-              <Link to="/login" className="hover:text-gray-300">
+            <li>
+              <Link to="/login" className="text-yellow-500 hover:text-yellow-400"> {/* Updated */}
                 Login
               </Link>
             </li>
