@@ -8,7 +8,8 @@ import MainLayout from '../layouts/MainLayout';
 import Sidebar from './components/Sidebar.jsx'; // Import Sidebar
 import Pagination from '../components/Pagination.jsx';
 import MealDetailPage from './components/MealDetailPage.jsx';
-import RegistrationPage from './components/RegistrationPage.jsx'; // Added import
+import RegistrationPage from './components/RegistrationPage.jsx';
+import LoginPage from './components/LoginPage.jsx'; // Added import
 
 function App() {
   const [meals, setMeals] = useState([
@@ -756,7 +757,8 @@ function App() {
           }
         />
         <Route path="/meal/:id" element={<MealDetailPage meals={meals} />} />
-        <Route path="/register" element={<RegistrationPage />} /> {/* Added route */}
+        <Route path="/register" element={<RegistrationPage />} />
+        <Route path="/login" element={<LoginPage />} /> {/* Added route */}
       </Routes>
     </MainLayout>
   )
