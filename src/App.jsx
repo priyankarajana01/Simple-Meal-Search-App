@@ -9,7 +9,8 @@ import Sidebar from './components/Sidebar.jsx'; // Import Sidebar
 import Pagination from '../components/Pagination.jsx';
 import MealDetailPage from './components/MealDetailPage.jsx';
 import RegistrationPage from './components/RegistrationPage.jsx';
-import LoginPage from './components/LoginPage.jsx'; // Added import
+import LoginPage from './components/LoginPage.jsx';
+import ContactPage from './components/ContactPage.jsx'; // Added import
 
 function App() {
   const [meals, setMeals] = useState([
@@ -758,7 +759,8 @@ function App() {
         />
         <Route path="/meal/:id" element={<MealDetailPage meals={meals} />} />
         <Route path="/register" element={<RegistrationPage />} />
-        <Route path="/login" element={<LoginPage />} /> {/* Added route */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/contact" element={<ContactPage />} /> {/* Added route */}
       </Routes>
     </MainLayout>
   )

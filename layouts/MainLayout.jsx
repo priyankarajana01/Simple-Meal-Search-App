@@ -24,9 +24,9 @@ export default function MainLayout({ children }) {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-gray-300"> {/* Keep as is for now */}
+              <Link to="/contact" className="hover:text-gray-300"> {/* Updated */}
                 Contact
-              </a>
+              </Link>
             </li>
             <li>
               <Link to="/register" className="text-yellow-500 hover:text-yellow-400"> {/* Updated */}
